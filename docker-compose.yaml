@@ -1,55 +1,25 @@
 version: '3'
 
 services:
-
-  webserver:
-    image: webserver
-    container_name: webserver
-    depends_on:
-      - api
-    build:
-      context: ./nginx
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./:/usr/src/app/
     ports:
-      - 3200:3200
-    networks:
-      - nginx_network
-
-
-  api:
-    image: api
-    container_name: api
-    build:
-      context: .
+      - 8000:8000
+    env_file:
+      - ./.env
     depends_on:
       - db
-    environment:
-      POSTGRES_DB: djangoapp
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
-    command: python manage.py runserver 0.0.0.0:5001
-    ports:
-      - 5001:5001
-    restart: on-failure
-    networks:
-        - nginx_network
-  
   db:
-    image: db
-    container_name: db
-    healthcheck:
-      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root", "-P", "root" ]
-      timeout: 45s
-      interval: 10s
-      retries: 10
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-    restart: always
-    build:
-      context: ./db
-    ports:
-      - 5432:5432
-    networks:
-      - nginx_network
+      - POSTGRES_USER=nurpolat
+      - POSTGRES_PASSWORD=nurpolat
+      - POSTGRES_DB=blog_db
+
+volumes:
+  postgres_data:

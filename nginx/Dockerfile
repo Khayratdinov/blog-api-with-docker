@@ -1,5 +1,4 @@
-FROM nginx:1.17.10
+FROM nginx:1.21-alpine
 
-COPY nginx.conf /etc/nginx/nginx.conf
-
-RUN apt-get update && apt-get install nano
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d
