@@ -1,8 +1,23 @@
 version: '3'
 
 services:
-  web:
+
+  webServer:
+    image: nginx:1.17.10
+    container_name: webServer
+    depends_on:
+      - api
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+
+
+  api:
+    image: api
+    container_name: api
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:5001
     ports: 
-      - "8000:8000"
+      - 5001:5001
+    restart: on-failure
