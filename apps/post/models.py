@@ -1,5 +1,7 @@
 from django.db import models
 # ============================================================================ #
+from apps.users.models import User 
+
 
 # ================================= CATEGORY ================================= #
 
@@ -18,6 +20,7 @@ class Blog(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     body = models.TextField(blank=True, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="blogs")
     images = models.ImageField(upload_to="media", blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, related_name="blogs")
     data_pub = models.DateTimeField(auto_now=True)

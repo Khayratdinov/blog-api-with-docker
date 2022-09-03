@@ -4,9 +4,10 @@ from .models import Category, Blog
 
 # ============================== BLOGSERIALIZER ============================== #
 class BlogSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
     class Meta:
         model = Blog
-        fields = ['id', 'title', 'description', 'body', 'images', 'category', 'data_pub', 'last_update']
+        fields = ['id', 'title', 'description', 'body', 'author', 'images', 'category', 'data_pub', 'last_update']
 
 
 

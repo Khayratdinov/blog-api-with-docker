@@ -2,13 +2,15 @@
 
 from django.db.models.aggregates import Count
 # ============================================================================ #
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 # ============================================================================ #
 from .models import Category, Blog
 from .serializers  import CategorySerializer, BlogSerializer,  CategoryDetailSerializer
+from .permissions import IsOwnerOrReadOnly
 
 
 
@@ -19,13 +21,23 @@ from .serializers  import CategorySerializer, BlogSerializer,  CategoryDetailSer
 
 
 class BlogList(ListCreateAPIView):
+    
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class BlogDetail(RetrieveUpdateDestroyAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    permission_classes = [IsOwnerOrReadOnly,]
+
+
+
+
 
 
 
@@ -44,6 +56,7 @@ class CategoryDetail(RetrieveUpdateDestroyAPIView):
 
 
 # ============================== FUNCTION VIEWS ============================== #
+
 
 @api_view(['GET', 'POST'])
 def category_list(request):
