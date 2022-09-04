@@ -1,16 +1,19 @@
 
 
 from django.db.models.aggregates import Count
+from django_filters.rest_framework import DjangoFilterBackend
 # ============================================================================ #
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework import status
-from rest_framework.permissions import IsAdminOrReadOnly, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import  IsAuthenticatedOrReadOnly
+from rest_framework.filters import SearchFilter, OrderingFilter
 # ============================================================================ #
 from .models import Category, Blog
 from .serializers  import CategorySerializer, BlogSerializer,  CategoryDetailSerializer
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
+from .pagination import DefaultPagination
 
 
 
@@ -25,6 +28,10 @@ class BlogList(ListCreateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     permission_classes = [IsAuthenticatedOrReadOnly,]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['title', 'description']
+    ordering_fields = ['data_pub',]
+    pagination_class = DefaultPagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -39,6 +46,10 @@ class BlogDetail(RetrieveUpdateDestroyAPIView):
 
 class BlogListByAuthor(ListAPIView):
     serializer_class = BlogSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['title', 'description']
+    ordering_fields = ['data_pub',]
+    pagination_class = DefaultPagination
 
     def get_queryset(self):
         return Blog.objects.filter(author__username=self.kwargs['username'])

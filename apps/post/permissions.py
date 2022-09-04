@@ -1,6 +1,8 @@
 from rest_framework import permissions
+# ============================================================================ #
 
 
+# =========================== IS OWNER OR READONLY =========================== #
 class IsOwnerOrReadOnly(permissions.BasePermission):
  
     def has_object_permission(self, request, view, obj):
@@ -9,6 +11,9 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
         return obj.author == request.user
 
+
+
+# =========================== IS ADMIN OR READONLY =========================== #
 
 class IsAdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
