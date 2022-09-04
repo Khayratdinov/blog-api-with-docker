@@ -2,11 +2,11 @@
 
 from django.db.models.aggregates import Count
 # ============================================================================ #
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAdminOrReadOnly, IsAuthenticatedOrReadOnly
 # ============================================================================ #
 from .models import Category, Blog
 from .serializers  import CategorySerializer, BlogSerializer,  CategoryDetailSerializer
@@ -24,7 +24,7 @@ class BlogList(ListCreateAPIView):
     
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly,]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -37,7 +37,11 @@ class BlogDetail(RetrieveUpdateDestroyAPIView):
 
 
 
+class BlogListByAuthor(ListAPIView):
+    serializer_class = BlogSerializer
 
+    def get_queryset(self):
+        return Blog.objects.filter(author__username=self.kwargs['username'])
 
 
 
@@ -48,9 +52,11 @@ class BlogDetail(RetrieveUpdateDestroyAPIView):
 
 # ================================ CLASS VIEWS =============================== #
 
+
 class CategoryDetail(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategoryDetailSerializer
+    permission_classes = [IsAdminOrReadOnly,]
 
 
 
