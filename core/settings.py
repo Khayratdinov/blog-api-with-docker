@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'rest_framework',
     "debug_toolbar",
     "django_filters",
+    "corsheaders",
+    "drf_yasg",
 
     'apps.post',
     'apps.users',
@@ -62,6 +64,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
