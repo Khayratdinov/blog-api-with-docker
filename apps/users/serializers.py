@@ -20,7 +20,7 @@ class EmailTokenSerializer(serializers.ModelSerializer):
 
     def validate_username(self, value):
         if value == 'me':
-            raise ValidationError(message='Данное имя пользователя запрещено')
+            raise ValidationError(message='Bu nomni ishlata olmaysiz iltimos boshqa ism tanlang')
         return value
 
 
