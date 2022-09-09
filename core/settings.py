@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     'apps.post',
     'apps.users',
+    'apps.common',
 ]
 
 INTERNAL_IPS = [

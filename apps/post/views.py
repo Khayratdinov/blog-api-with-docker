@@ -10,10 +10,10 @@ from rest_framework import status
 from rest_framework.permissions import  IsAuthenticatedOrReadOnly
 from rest_framework.filters import SearchFilter, OrderingFilter
 # ============================================================================ #
-from .models import Category, Blog
-from .serializers  import CategorySerializer, BlogSerializer,  CategoryDetailSerializer
-from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
-from .pagination import DefaultPagination
+from apps.post.models import Category, Blog
+from apps.post.serializers  import CategorySerializer, BlogSerializer,  CategoryDetailSerializer
+from apps.post.permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
+from apps.post.pagination import DefaultPagination
 
 
 

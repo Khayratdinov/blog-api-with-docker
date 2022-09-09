@@ -7,7 +7,7 @@ class BlogSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
     class Meta:
         model = Blog
-        fields = ['id', 'title', 'description', 'body', 'author', 'images', 'category', 'data_pub', 'last_update']
+        fields = ['id', 'title', 'description', 'body', 'author', 'images', 'category', 'created_at', 'updated_at']
 
 
 
@@ -18,7 +18,7 @@ class CategorySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Category
-        fields = ['id', 'title', 'sub_title', 'data_pub', 'blogs_count' ]
+        fields = ['id', 'title', 'sub_title', 'created_at', 'blogs_count' ]
 
 class CategoryDetailSerializer(serializers.ModelSerializer):
 
@@ -27,4 +27,4 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
   
     class Meta:
         model = Category
-        fields = ['id', 'title', 'sub_title', 'data_pub', 'blogs', 'blogs_count']
+        fields = ['id', 'title', 'sub_title', 'created_at', 'blogs', 'blogs_count']
