@@ -11,7 +11,7 @@ from rest_framework.permissions import  IsAuthenticatedOrReadOnly
 from rest_framework.filters import SearchFilter, OrderingFilter
 # ============================================================================ #
 from apps.post.models import Category, Blog
-from apps.post.serializers  import CategorySerializer, BlogSerializer,  CategoryDetailSerializer
+from apps.post.api.serializers  import CategorySerializer, BlogSerializer,  CategoryDetailSerializer
 from apps.post.permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
 from apps.post.pagination import DefaultPagination
 
@@ -24,6 +24,10 @@ from apps.post.pagination import DefaultPagination
 
 
 class BlogList(ListCreateAPIView):
+    """
+    get:
+        Barcha mavjud bloglar royxatini qaytaradi.
+    """
     
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
@@ -32,6 +36,9 @@ class BlogList(ListCreateAPIView):
     search_fields = ['title', 'description']
     ordering_fields = ['data_pub',]
     pagination_class = DefaultPagination
+
+    def get_queryset(self):
+        return Blog.objects.publish()
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

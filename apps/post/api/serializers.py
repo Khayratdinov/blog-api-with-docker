@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Blog
+from ..models import Category, Blog
 # ============================================================================ #
 
 # ============================== BLOGSERIALIZER ============================== #

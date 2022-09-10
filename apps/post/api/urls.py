@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from .api import views
 
 urlpatterns = [
     path('blogs/', views.BlogList.as_view()),

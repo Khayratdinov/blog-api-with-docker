@@ -12,7 +12,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.shortcuts import get_object_or_404
 from django.core.mail import EmailMessage
 # ============================================================================ #
-from .models import User
+from ..models import User
 from .serializers import (
                           EmailTokenSerializer, TokenObtainPairSerializer,
                           UserSerializer)
