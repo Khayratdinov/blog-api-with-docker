@@ -10,9 +10,10 @@ from rest_framework import status
 from rest_framework.permissions import  IsAuthenticatedOrReadOnly
 from rest_framework.filters import SearchFilter, OrderingFilter
 # ============================================================================ #
+from apps.common.permissions import IsSuperUserOrAuthorOrReadOnly, IsSuperUserOrReadOnly
+
 from apps.post.models import Category, Blog
 from apps.post.api.serializers  import CategorySerializer, BlogSerializer,  CategoryDetailSerializer
-from apps.post.permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
 from apps.post.pagination import DefaultPagination
 
 
@@ -47,7 +48,7 @@ class BlogList(ListCreateAPIView):
 class BlogDetail(RetrieveUpdateDestroyAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
-    permission_classes = [IsOwnerOrReadOnly,]
+    permission_classes = [IsSuperUserOrAuthorOrReadOnly,]
 
 
 
@@ -74,7 +75,7 @@ class BlogListByAuthor(ListAPIView):
 class CategoryDetail(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategoryDetailSerializer
-    permission_classes = [IsAdminOrReadOnly,]
+    permission_classes = [IsSuperUserOrReadOnly,]
 
 
 
