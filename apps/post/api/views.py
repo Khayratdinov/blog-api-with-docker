@@ -73,7 +73,7 @@ class BlogListByAuthor(ListAPIView):
 
 
 class CategoryDetail(RetrieveUpdateDestroyAPIView):
-    queryset = Category.objects.all()
+    queryset = Category.objects.active()
     serializer_class = CategoryDetailSerializer
     permission_classes = [IsSuperUserOrReadOnly,]
 
