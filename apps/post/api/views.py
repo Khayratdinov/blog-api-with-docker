@@ -30,7 +30,6 @@ class BlogList(ListCreateAPIView):
         Barcha mavjud bloglar royxatini qaytaradi.
     """
     
-    queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     permission_classes = [IsAuthenticatedOrReadOnly,]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -39,16 +38,18 @@ class BlogList(ListCreateAPIView):
     pagination_class = DefaultPagination
 
     def get_queryset(self):
-        return Blog.objects.publish()
+        return Blog.objects.select_related_object('category')
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
 
 class BlogDetail(RetrieveUpdateDestroyAPIView):
-    queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     permission_classes = [IsSuperUserOrAuthorOrReadOnly,]
+
+    def get_queryset(self):
+        return Blog.objects.select_related_object('category')
 
 
 

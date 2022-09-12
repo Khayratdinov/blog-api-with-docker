@@ -1,3 +1,4 @@
+from unicodedata import category
 from rest_framework import serializers
 from ..models import Category, Blog
 # ============================================================================ #
@@ -5,6 +6,7 @@ from ..models import Category, Blog
 # ============================== BLOGSERIALIZER ============================== #
 class BlogSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
+    category = serializers.StringRelatedField()
     class Meta:
         model = Blog
         fields = ['id', 'title', 'description', 'body', 'author', 'images', 'category', 'created_at', 'updated_at']
