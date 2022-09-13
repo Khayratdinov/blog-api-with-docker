@@ -4,7 +4,7 @@ from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 # ============================================================================ #
-from rest_framework.decorators import api_view, permission_classes as view_permission_classes
+from rest_framework.decorators import action, permission_classes as view_permission_classes
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework import status
@@ -50,6 +50,7 @@ class BlogViewSet(ModelViewSet):
 
 
 
+
 class BlogListByAuthor(ListAPIView):
     serializer_class = BlogSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -59,6 +60,10 @@ class BlogListByAuthor(ListAPIView):
 
     def get_queryset(self):
         return Blog.objects.filter(author__username=self.kwargs['username'])
+
+    
+
+
 
 
 # ============================================================================ #
@@ -106,6 +111,7 @@ class CategoryDetail(RetrieveUpdateDestroyAPIView):
 
 #     if request.method == 'GET':
 #         serializers = CategoryDetailSerializer(category)
+        
 #         return Response(serializers.data)
 
 #     elif request.method == 'PUT':

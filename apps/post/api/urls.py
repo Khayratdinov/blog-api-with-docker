@@ -4,23 +4,17 @@ from rest_framework_nested import routers
 # ============================================================================ #
 from apps.post.api import views
 
+
+
+
 router = routers.DefaultRouter()
-
-router.register(r'blog', views.BlogViewSet, basename='blog')
-
-
-
+router.register(r'', views.BlogViewSet, basename='blog')
 
 
 urlpatterns = [
 
-    path('author-blogs/<str:username>/', views.BlogListByAuthor.as_view()),
-
-
-    path('category-with-class/<int:pk>/', views.CategoryDetail.as_view()),
-    path('category-with-function/', views.category_list),
-    path('category-with-function/<int:pk>/', views.category_detail),
-
+    path('author/<str:username>/', views.BlogListByAuthor.as_view()),
+    path('category/<int:pk>/', views.CategoryDetail.as_view()),
     
 ]
 
