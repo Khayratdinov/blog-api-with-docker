@@ -3,6 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,linux,django
 
 ### Django ###
+docker-compose2.yaml
 *.log
 *.pot
 *.pyc

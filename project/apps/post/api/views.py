@@ -1,11 +1,7 @@
-
-
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 # ============================================================================ #
-from rest_framework.decorators import action, permission_classes as view_permission_classes
-from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework import status
 from rest_framework.permissions import  IsAuthenticatedOrReadOnly, AllowAny
@@ -21,11 +17,7 @@ from apps.post.pagination import DefaultPagination
 
 
 
-# ============================================================================ #
-#                                     BLOG                                     #
-# ============================================================================ #
-
-
+# =================================== BLOG =================================== #
 
 class BlogViewSet(ModelViewSet):
 
@@ -66,10 +58,7 @@ class BlogListByAuthor(ListAPIView):
 
 
 
-# ============================================================================ #
-#                                   CATEGORY                                   #
-# ============================================================================ #
-
+# ================================= CATEGORY ================================= #
 
 class CategoryDetail(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.active()
@@ -83,13 +72,7 @@ class CategoryDetail(RetrieveUpdateDestroyAPIView):
 # ============================================================================ #
 
 
-
-# ============================================================================ #
-#                                   CATEGORY                                   #
-# ============================================================================ #
-
-# ============================== FUNCTION VIEWS ============================== #
-
+# ================================= CATEGORY ================================= #
 
 # @api_view(['GET', 'POST'])
 # def category_list(request):
@@ -125,41 +108,3 @@ class CategoryDetail(RetrieveUpdateDestroyAPIView):
 #             return Response({'error': 'Categoryga bogliq bloglar borligi sabab buni oshira olmaysiz'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 #         category.delete()
 #         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-# ============================================================================ #
-#                                     BLOG                                     #
-# ============================================================================ #
-
-# class BlogList(ListCreateAPIView):
-#     """
-#     GET:
-#         Barcha mavjud bloglar royxatini qaytaradi.
-    
-#     POST:
-#          Royxattan otkan foydalanuvshi Blog yarata oladi
-
-#     """
-    
-#     serializer_class = BlogSerializer
-#     permission_classes = [IsAuthenticatedOrReadOnly,]
-#     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-#     search_fields = ['title', 'description']
-#     ordering_fields = ['data_pub',]
-#     pagination_class = DefaultPagination
-
-#     def get_queryset(self):
-#         return Blog.objects.select_related_object('category')
-
-#     def perform_create(self, serializer):
-#         serializer.save(author=self.request.user)
-
-
-
-# class BlogDetail(RetrieveUpdateDestroyAPIView):
-#     serializer_class = BlogSerializer
-#     permission_classes = [IsSuperUserOrAuthorOrReadOnly,]
-
-#     def get_queryset(self):
-#         return Blog.objects.select_related_object('category')
