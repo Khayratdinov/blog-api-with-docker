@@ -1,38 +1,48 @@
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
+
 # ============================================================================ #
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+    ListAPIView,
+)
 from rest_framework import status
-from rest_framework.permissions import  IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
+
 # ============================================================================ #
 from apps.common.permissions import IsSuperUserOrAuthorOrReadOnly, IsSuperUserOrReadOnly
 
-from apps.post.models import Category, Blog
-from apps.post.api.serializers  import CategorySerializer, BlogSerializer,  CategoryDetailSerializer
-from apps.post.pagination import DefaultPagination
-
-
+from project.apps.post.models import Category, Blog
+from project.apps.post.api.serializers import (
+    CategorySerializer,
+    BlogSerializer,
+    CategoryDetailSerializer,
+)
+from project.apps.post.pagination import DefaultPagination
 
 
 # =================================== BLOG =================================== #
+
 
 class BlogViewSet(ModelViewSet):
 
     serializer_class = BlogSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    search_fields = ['title', 'description']
-    ordering_fields = ['created_at',]
+    search_fields = ["title", "description"]
+    ordering_fields = [
+        "created_at",
+    ]
     pagination_class = DefaultPagination
 
-
     def get_queryset(self):
-        return Blog.objects.select_related_object('category')
+        return Blog.objects.select_related_object("category")
 
     def get_permissions(self):
-        if self.request.method in ['PATCH', 'DELETE']:
+        if self.request.method in ["PATCH", "DELETE"]:
             return [IsSuperUserOrAuthorOrReadOnly()]
         return [IsAuthenticatedOrReadOnly()]
 
@@ -40,31 +50,28 @@ class BlogViewSet(ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-
-
-
 class BlogListByAuthor(ListAPIView):
     serializer_class = BlogSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    search_fields = ['title', 'description']
-    ordering_fields = ['data_pub',]
+    search_fields = ["title", "description"]
+    ordering_fields = [
+        "data_pub",
+    ]
     pagination_class = DefaultPagination
 
     def get_queryset(self):
-        return Blog.objects.filter(author__username=self.kwargs['username'])
-
-    
-
-
+        return Blog.objects.filter(author__username=self.kwargs["username"])
 
 
 # ================================= CATEGORY ================================= #
 
+
 class CategoryDetail(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.active()
     serializer_class = CategoryDetailSerializer
-    permission_classes = [IsSuperUserOrReadOnly,]
-
+    permission_classes = [
+        IsSuperUserOrReadOnly,
+    ]
 
 
 # ============================================================================ #
@@ -94,7 +101,7 @@ class CategoryDetail(RetrieveUpdateDestroyAPIView):
 
 #     if request.method == 'GET':
 #         serializers = CategoryDetailSerializer(category)
-        
+
 #         return Response(serializers.data)
 
 #     elif request.method == 'PUT':
