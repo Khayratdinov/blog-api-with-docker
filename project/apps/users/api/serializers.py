@@ -6,21 +6,19 @@ from ..models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = (
-            'username', 'email',
-            'first_name', 'last_name',
-            'bio'
-        )
+        fields = ("username", "email", "first_name", "last_name", "bio")
 
 
 class EmailTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ("username", "email")
 
     def validate_username(self, value):
-        if value == 'me':
-            raise ValidationError(message='Bu nomni ishlata olmaysiz iltimos boshqa ism tanlang')
+        if value == "me":
+            raise ValidationError(
+                message="Bu nomni ishlata olmaysiz iltimos boshqa ism tanlang"
+            )
         return value
 
 
@@ -30,4 +28,4 @@ class TokenObtainPairSerializer(serializers.Serializer):
 
     class Meta:
         model = User
-        fields = ('username', 'confirmation_code')
+        fields = ("username", "confirmation_code")
