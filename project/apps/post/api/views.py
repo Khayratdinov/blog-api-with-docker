@@ -14,7 +14,10 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 # ============================================================================ #
-from apps.common.permissions import IsSuperUserOrAuthorOrReadOnly, IsSuperUserOrReadOnly
+from project.apps.common.permissions import (
+    IsSuperUserOrAuthorOrReadOnly,
+    IsSuperUserOrReadOnly,
+)
 
 from project.apps.post.models import Category, Blog
 from project.apps.post.api.serializers import (

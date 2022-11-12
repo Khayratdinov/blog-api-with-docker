@@ -9,23 +9,26 @@ from drf_yasg import openapi
 
 
 schema_view = get_schema_view(
-  openapi.Info(
-      title="Blog API",
-      default_version="v1",
-  ),
-  public=True,
-  permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="Blog API",
+        default_version="v1",
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [
-    path('__debug__/', include('debug_toolbar.urls')),
-    path('admin/', admin.site.urls),
-    path("swagger-docs/", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
-    path('api/v1/', include('apps.post.api.urls')),
-    path('api/v1/users/', include('apps.users.api.urls')),
+    path("__debug__/", include("debug_toolbar.urls")),
+    path("admin/", admin.site.urls),
+    path(
+        "swagger-docs/",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
+    path("api/v1/", include("project.apps.post.api.urls")),
+    path("api/v1/users/", include("project.apps.users.api.urls")),
 ]
 
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
